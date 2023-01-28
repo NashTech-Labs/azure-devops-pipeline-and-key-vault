@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  name: 'Default'
+  demands:
+      - agent.name -equals ubuntu
+
+steps:
+
+- task: AzureKeyVault
+  inputs:
+    azureSubscription: 'keyvaultservice'                    
+    KeyVaultName: 'demo06keyvault'                         
+    SecretsFilter: '*'                          
+    RunAsPreJob: false 
+- task: PowerShell
+  displayName: 'Run Powershell Build'
+  inputs:
+    targetType: 'inline'
+    script: '.\script.ps1 -test $(test) -test1 $(test1)'
